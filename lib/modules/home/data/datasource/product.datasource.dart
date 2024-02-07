@@ -21,7 +21,11 @@ class ProductDataSource implements ProductDataSourceProtocol {
 
   @override
   Future<ProductModel> readProduct(String id) {
-    throw UnimplementedError();
+    final userId = CurrentUser().user!.id;
+    return database.getProduct(
+      userId,
+      id,
+    );
   }
 
   @override
@@ -37,8 +41,13 @@ class ProductDataSource implements ProductDataSourceProtocol {
   }
 
   @override
-  Future<bool> deleteProduct(String id) {
-    throw UnimplementedError();
+  Future<bool> deleteProduct(String id) async {
+    final userId = CurrentUser().user!.id;
+    await database.deleteProduct(
+      userId,
+      id,
+    );
+    return true;
   }
 
   @override
@@ -49,7 +58,14 @@ class ProductDataSource implements ProductDataSourceProtocol {
   }
 
   @override
-  Future<ProductModel> editProduct(ProductModel product) {
-    throw UnimplementedError();
+  Future<ProductModel> editProduct(ProductModel product) async {
+    final userId = CurrentUser().user!.id;
+    await database.updateProduct(
+      userId,
+      product.id,
+      product.toJson(),
+      forceRefresh: true,
+    );
+    return product;
   }
 }

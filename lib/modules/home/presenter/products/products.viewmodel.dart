@@ -1,7 +1,8 @@
-import 'package:how_much/core/logger.dart';
-import 'package:how_much/modules/home/domain/entities/product.entity.dart';
-import 'package:how_much/modules/home/domain/usecase/crud.product.dart';
 import 'package:mobx/mobx.dart';
+
+import '../../../../core/logger.dart';
+import '../../domain/entities/product.entity.dart';
+import '../../domain/usecase/crud.product.dart';
 
 part 'products.viewmodel.g.dart';
 

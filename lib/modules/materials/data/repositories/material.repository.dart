@@ -27,7 +27,8 @@ class MaterialRepository implements MaterialRepositoryProtocol {
   @override
   Future<Either<Failure, MaterialEntity>> edit(MaterialEntity material) async {
     try {
-      final edited = await dataSource.editMaterial(material as MaterialModel);
+      final edited =
+          await dataSource.editMaterial(MaterialModel.fromEntity(material));
       return Right(edited);
     } on Exception {
       return Left(JSONFailure());

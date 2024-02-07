@@ -26,7 +26,11 @@ class ProductRepository implements ProductRepositoryProtocol {
   @override
   Future<Either<Failure, ProductEntity>> edit(ProductEntity product) async {
     try {
-      final edited = await dataSource.editProduct(product as ProductModel);
+      final edited = await dataSource.editProduct(
+        ProductModel.fromEntity(
+          product,
+        ),
+      );
       return Right(edited);
     } on Exception {
       return Left(JSONFailure());

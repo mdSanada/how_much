@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:how_much/core/logger.dart';
 import 'package:how_much/modules/home/domain/entities/product.entity.dart';
 import 'package:how_much/modules/home/domain/entities/product.material.entity.dart';
@@ -23,12 +24,32 @@ abstract class AddProductsViewModelBase with Store {
   List<ProductMaterialEntity> material = [];
 
   @observable
+  bool isEditing = false;
+
+  @observable
+  bool isLoading = false;
+
+  @observable
   ProductProfitEntity? profit;
+
+  String? id;
 
   AddProductsViewModelBase({required this.useCase});
 
   @action
-  configure() async {}
+  configure({ProductEntity? product}) async {
+    if (product != null) {
+      setDescription(ProductDescriptionEntity(
+        name: product.name,
+        description: product.description,
+        quantity: product.amount.toDouble(),
+      ));
+      setMaterial(product.materials);
+      setProfit(product.profit);
+      id = product.id;
+      isEditing = true;
+    }
+  }
 
   @action
   void setDescription(ProductDescriptionEntity description) {
@@ -47,8 +68,13 @@ abstract class AddProductsViewModelBase with Store {
   }
 
   @action
-  Future<void> saveProduct() async {
+  Future<void> saveProduct(BuildContext context) async {
+    if (isLoading) {
+      return;
+    }
+    isLoading = true;
     final product = ProductEntity(
+      id: id ?? "",
       name: description?.name ?? "Produto",
       amount: description?.quantity.toInt() ?? 1,
       description: description?.description ?? "Descrição",
@@ -56,6 +82,37 @@ abstract class AddProductsViewModelBase with Store {
           profit ?? ProductProfitEntity(type: ProfitType.percentage, value: 20),
       materials: material,
     );
-    await useCase.create(product);
+
+    if (isEditing) {
+      await useCase.edit(product);
+    } else {
+      await useCase.create(product);
+    }
+
+    isLoading = false;
+    if (context.mounted) {
+      Navigator.pop(context);
+    }
+  }
+
+  bool validateDescription() {
+    if (description == null) {
+      return false;
+    }
+    return true;
+  }
+
+  bool validateMaterial() {
+    if (material.isEmpty || material.length <= 1) {
+      return false;
+    }
+    return true;
+  }
+
+  bool validateProfit() {
+    if (profit == null) {
+      return false;
+    }
+    return true;
   }
 }

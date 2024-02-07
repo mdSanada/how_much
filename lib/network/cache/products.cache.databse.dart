@@ -1,25 +1,25 @@
 import 'dart:convert';
 
-import 'package:how_much/core/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../modules/materials/data/models/material.model.dart';
+import '../../core/logger.dart';
+import '../../modules/home/data/models/product.model.dart';
 
-abstract class MaterialsCacheProtocol {
-  Future<bool> store(List<MaterialModel> materials);
-  Future<List<MaterialModel>> cache();
+abstract class ProductsCacheProtocol {
+  Future<bool> store(List<ProductModel> products);
+  Future<List<ProductModel>> cache();
 }
 
-class MaterialsCacheDatabase implements MaterialsCacheProtocol {
+class ProductsCacheDatabase implements ProductsCacheProtocol {
   final Future<SharedPreferences> _storage = SharedPreferences.getInstance();
-  final key = "MATERIALS_CACHE";
+  final key = "PRODUCTS_CACHE";
 
   @override
-  Future<bool> store(List<MaterialModel> materials) async {
+  Future<bool> store(List<ProductModel> products) async {
     final SharedPreferences storage = await _storage;
 
     var body = json.encode(
-      materials
+      products
           .map(
             (e) => e.toJson(),
           )
@@ -35,11 +35,11 @@ class MaterialsCacheDatabase implements MaterialsCacheProtocol {
   }
 
   @override
-  Future<List<MaterialModel>> cache() async {
+  Future<List<ProductModel>> cache() async {
     final SharedPreferences storage = await _storage;
 
     String body = "[]";
-    List<MaterialModel> materials = [];
+    List<ProductModel> products = [];
     try {
       body = storage.getString(key) ?? "[]";
     } catch (e) {
@@ -53,10 +53,10 @@ class MaterialsCacheDatabase implements MaterialsCacheProtocol {
         try {
           final list = object
               .map(
-                (i) => MaterialModel.fromJson(i),
+                (i) => ProductModel.fromJson(i),
               )
               .toList();
-          materials = List<MaterialModel>.from(list).toList();
+          products = List<ProductModel>.from(list).toList();
         } catch (e) {
           return Future.value([]);
         }
@@ -64,8 +64,8 @@ class MaterialsCacheDatabase implements MaterialsCacheProtocol {
     }
     Logger.log(
       name: "CACHE",
-      "$materials",
+      "$products",
     );
-    return Future.value(materials);
+    return Future.value(products);
   }
 }

@@ -41,6 +41,38 @@ mixin _$AddProductsViewModel on AddProductsViewModelBase, Store {
     });
   }
 
+  late final _$isEditingAtom =
+      Atom(name: 'AddProductsViewModelBase.isEditing', context: context);
+
+  @override
+  bool get isEditing {
+    _$isEditingAtom.reportRead();
+    return super.isEditing;
+  }
+
+  @override
+  set isEditing(bool value) {
+    _$isEditingAtom.reportWrite(value, super.isEditing, () {
+      super.isEditing = value;
+    });
+  }
+
+  late final _$isLoadingAtom =
+      Atom(name: 'AddProductsViewModelBase.isLoading', context: context);
+
+  @override
+  bool get isLoading {
+    _$isLoadingAtom.reportRead();
+    return super.isLoading;
+  }
+
+  @override
+  set isLoading(bool value) {
+    _$isLoadingAtom.reportWrite(value, super.isLoading, () {
+      super.isLoading = value;
+    });
+  }
+
   late final _$profitAtom =
       Atom(name: 'AddProductsViewModelBase.profit', context: context);
 
@@ -57,19 +89,24 @@ mixin _$AddProductsViewModel on AddProductsViewModelBase, Store {
     });
   }
 
-  late final _$AddProductsViewModelBaseActionController =
-      ActionController(name: 'AddProductsViewModelBase', context: context);
+  late final _$configureAsyncAction =
+      AsyncAction('AddProductsViewModelBase.configure', context: context);
 
   @override
-  dynamic configure() {
-    final _$actionInfo = _$AddProductsViewModelBaseActionController.startAction(
-        name: 'AddProductsViewModelBase.configure');
-    try {
-      return super.configure();
-    } finally {
-      _$AddProductsViewModelBaseActionController.endAction(_$actionInfo);
-    }
+  Future configure({ProductEntity? product}) {
+    return _$configureAsyncAction.run(() => super.configure(product: product));
   }
+
+  late final _$saveProductAsyncAction =
+      AsyncAction('AddProductsViewModelBase.saveProduct', context: context);
+
+  @override
+  Future<void> saveProduct(BuildContext context) {
+    return _$saveProductAsyncAction.run(() => super.saveProduct(context));
+  }
+
+  late final _$AddProductsViewModelBaseActionController =
+      ActionController(name: 'AddProductsViewModelBase', context: context);
 
   @override
   void setDescription(ProductDescriptionEntity description) {
@@ -109,6 +146,8 @@ mixin _$AddProductsViewModel on AddProductsViewModelBase, Store {
     return '''
 description: ${description},
 material: ${material},
+isEditing: ${isEditing},
+isLoading: ${isLoading},
 profit: ${profit}
     ''';
   }

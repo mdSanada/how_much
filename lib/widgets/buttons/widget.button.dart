@@ -16,6 +16,7 @@ class WidgetButton extends StatefulWidget {
   final bool disableButtonOnLoading;
   final bool fadeIn;
   final Color loadingColor;
+  final double? width;
 
   const WidgetButton({
     super.key,
@@ -27,6 +28,7 @@ class WidgetButton extends StatefulWidget {
     required this.isEnabled,
     this.disableButtonOnLoading = false,
     this.loadingColor = Stylesheet.white,
+    this.width,
     required this.fadeIn,
   });
 
@@ -50,7 +52,8 @@ class _WidgetButtonState extends State<WidgetButton> {
   @override
   Widget build(BuildContext context) {
     bool isLoading = widget.isLoading;
-    double width = widget.isLoading ? widget.height : double.maxFinite;
+    double width =
+        widget.isLoading ? widget.height : widget.width ?? double.maxFinite;
     double corner =
         (widget.isLoading) ? (widget.height / 2) : CornerRadius.large;
     bool isEnabled = widget.isEnabled && !isLoading;
@@ -60,7 +63,8 @@ class _WidgetButtonState extends State<WidgetButton> {
     return Flexible(
       child: LayoutBuilder(
         builder: (ctx, constraints) {
-          width = isLoading ? widget.height : constraints.maxWidth;
+          width =
+              isLoading ? widget.height : widget.width ?? constraints.maxWidth;
           return AnimatedContainer(
             curve: Curves.fastOutSlowIn,
             height: widget.height,

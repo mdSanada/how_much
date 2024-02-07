@@ -34,6 +34,7 @@ class MaterialFirestoreDatabase implements MaterialDatabaseProtocol {
     );
 
     await getMaterials(userId, true);
+    return;
   }
 
   @override
@@ -52,6 +53,8 @@ class MaterialFirestoreDatabase implements MaterialDatabaseProtocol {
     if (forceRefresh) {
       await getMaterials(userId, true);
     }
+
+    return;
   }
 
   @override
@@ -65,6 +68,7 @@ class MaterialFirestoreDatabase implements MaterialDatabaseProtocol {
         .doc(materialId)
         .delete();
     await getMaterials(userId, true);
+    return;
   }
 
   @override
@@ -105,18 +109,6 @@ class MaterialFirestoreDatabase implements MaterialDatabaseProtocol {
     String userId,
     String materialId,
   ) async {
-    try {
-      final cached = await _materialsCache.cache();
-      final index = cached.indexWhere(
-        (element) => element.id == materialId,
-      );
-      if (index != -1) {
-        return cached[index];
-      }
-    } catch (e) {
-      Logger.log(e);
-    }
-
     final doc = await _userNetworkDatabase
         .getUserCollection(userId)
         .collection(Collections.materials)

@@ -94,6 +94,22 @@ abstract class AddMaterialViewModelBase with Store {
       onError = true;
     }
 
+    if (isEditing) {
+      final wrapper = await materialsUseCase.edit(_material);
+
+      wrapper.fold(
+        (l) {
+          isLoading = false;
+          onError = true;
+        },
+        (r) {
+          isLoading = false;
+          Navigator.pop(context);
+        },
+      );
+      return;
+    }
+
     final wrapper = await materialsUseCase.save(_material);
 
     wrapper.fold(

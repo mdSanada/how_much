@@ -9,6 +9,7 @@ class TitleAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool backButtonEnabled;
   final bool isClose;
   final double? titleSpacing;
+  final List<Widget> actions;
 
   const TitleAppBar({
     super.key,
@@ -17,6 +18,7 @@ class TitleAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.isClose = false,
     this.backButtonEnabled = false,
     this.titleSpacing,
+    this.actions = const [],
   });
 
   @override
@@ -38,6 +40,7 @@ class TitleAppBar extends StatelessWidget implements PreferredSizeWidget {
       // leadingWidth: Sizes.button,
       centerTitle: false,
       titleSpacing: titleSpacing,
+      actions: actions,
       title: Padding(
         padding: backButtonEnabled
             ? const EdgeInsets.all(0)

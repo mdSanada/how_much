@@ -1,9 +1,10 @@
 import 'package:equatable/equatable.dart';
-import 'package:how_much/calculator/calculator.dart';
 
+import '../../../../calculator/calculator.dart';
 import '../../../../validator/validator.dart';
 
 class MaterialEntity extends Equatable {
+  final String id;
   final String name;
   final String description;
   final double price;
@@ -11,6 +12,7 @@ class MaterialEntity extends Equatable {
   final Measures measure;
 
   const MaterialEntity({
+    required this.id,
     required this.name,
     required this.price,
     required this.description,
@@ -20,6 +22,7 @@ class MaterialEntity extends Equatable {
 
   @override
   List<Object?> get props => [
+        id,
         name,
         description,
         price,
@@ -29,6 +32,7 @@ class MaterialEntity extends Equatable {
 
   static MaterialEntity empty() {
     return const MaterialEntity(
+      id: '',
       name: '',
       price: 0.0,
       description: '',
@@ -46,6 +50,7 @@ class MaterialEntity extends Equatable {
     Measures? measure,
   }) {
     return MaterialEntity(
+      id: id ?? this.id,
       name: name ?? this.name,
       price: price ?? this.price,
       description: description ?? this.description,
@@ -68,23 +73,30 @@ class MaterialEntity extends Equatable {
   }
 
   Map<String, dynamic> toJson() {
+    CalculatorProtocol calculator = Calculator();
+
     return {
+      'id': id,
       'name': name,
       'description': description,
       'price': price,
-      'quantity': quantity,
-      'measure': measure.toString(),
+      'quantity': calculator.toDefault(measure, quantity),
+      'measure': MeasuresManager.stringfy(measure),
     };
   }
 
   factory MaterialEntity.fromJson(Map<String, dynamic> json) {
+    CalculatorProtocol calculator = Calculator();
+    final measure = Measures.values.firstWhere(
+        (measure) => measure == MeasuresManager.toMeasure(json['measure']));
+
     return MaterialEntity(
+      id: json['id'],
       name: json['name'],
       description: json['description'],
       price: json['price'],
-      quantity: json['quantity'],
-      measure: Measures.values.firstWhere(
-          (measure) => measure == MeasuresManager.toMeasure(json['measure'])),
+      quantity: calculator.fromDefault(measure, json['quantity']),
+      measure: measure,
     );
   }
 }

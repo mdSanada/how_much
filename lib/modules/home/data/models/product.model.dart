@@ -4,10 +4,8 @@ import 'package:how_much/modules/home/domain/entities/product.profit.entity.dart
 import '../../domain/entities/product.entity.dart';
 
 class ProductModel extends ProductEntity {
-  final String id;
-
   const ProductModel({
-    required this.id,
+    required super.id,
     required super.name,
     required super.description,
     required super.profit,
@@ -17,7 +15,7 @@ class ProductModel extends ProductEntity {
 
   factory ProductModel.fromEntity(ProductEntity entity) {
     return ProductModel(
-      id: '',
+      id: entity.id,
       name: entity.name,
       description: entity.description,
       profit: entity.profit,

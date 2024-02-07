@@ -36,7 +36,7 @@ class ProfitRowDescription extends StatelessWidget {
       children: [
         Expanded(
           child: ConstrainedBox(
-            constraints: BoxConstraints(
+            constraints: const BoxConstraints(
               minHeight: 90,
             ),
             child: Container(

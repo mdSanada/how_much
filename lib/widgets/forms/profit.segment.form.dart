@@ -21,7 +21,7 @@ class ProfitSegmentForm extends StatefulWidget {
 class _ProfitSegmentFormState extends State<ProfitSegmentForm> {
   @override
   Widget build(BuildContext context) {
-    ProfitType _selectedSegment = widget.value;
+    ProfitType selectedSegment = widget.value;
 
     return Padding(
       padding: const EdgeInsets.only(
@@ -45,22 +45,22 @@ class _ProfitSegmentFormState extends State<ProfitSegmentForm> {
             ),
             CupertinoSlidingSegmentedControl<ProfitType>(
               backgroundColor: Stylesheet.lightGray,
-              thumbColor: selectedColor[_selectedSegment]!,
-              groupValue: _selectedSegment,
+              thumbColor: selectedColor[selectedSegment]!,
+              groupValue: selectedSegment,
               onValueChanged: (ProfitType? value) {
                 if (value != null) {
                   setState(() {
-                    _selectedSegment = value;
+                    selectedSegment = value;
                     widget.onValueChanged(value);
                   });
                 }
               },
               children: <ProfitType, Widget>{
                 ProfitType.percentage: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Text(
                     'Porcentagem',
-                    style: (_selectedSegment == ProfitType.percentage)
+                    style: (selectedSegment == ProfitType.percentage)
                         ? Stylesheet.caption(
                             color: Stylesheet.white,
                           )
@@ -68,10 +68,10 @@ class _ProfitSegmentFormState extends State<ProfitSegmentForm> {
                   ),
                 ),
                 ProfitType.value: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Text(
                     'Valor',
-                    style: (_selectedSegment == ProfitType.value)
+                    style: (selectedSegment == ProfitType.value)
                         ? Stylesheet.caption(
                             color: Stylesheet.white,
                           )

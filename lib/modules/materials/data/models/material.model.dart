@@ -1,11 +1,9 @@
-import 'package:how_much/calculator/calculator.dart';
-import 'package:how_much/modules/materials/domain/entities/material.entity.dart';
+import '../../../../calculator/calculator.dart';
+import '../../domain/entities/material.entity.dart';
 
 class MaterialModel extends MaterialEntity {
-  final String id;
-
   const MaterialModel({
-    required this.id,
+    required super.id,
     required super.name,
     required super.price,
     required super.description,
@@ -28,7 +26,7 @@ class MaterialModel extends MaterialEntity {
 
   factory MaterialModel.fromEntity(MaterialEntity entity) {
     return MaterialModel(
-      id: '',
+      id: entity.id,
       name: entity.name,
       price: entity.price,
       description: entity.description,
@@ -37,6 +35,7 @@ class MaterialModel extends MaterialEntity {
     );
   }
 
+  @override
   Map<String, dynamic> toJson() {
     CalculatorProtocol calculator = Calculator();
 

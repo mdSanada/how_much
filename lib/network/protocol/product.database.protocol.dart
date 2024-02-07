@@ -8,18 +8,23 @@ abstract class ProductsDatabaseProtocol {
 
   Future<void> updateProduct(
     String userId,
-    String materialId,
+    String productId,
     Map<String, dynamic> updatedData, {
     bool forceRefresh = true,
   });
 
   Future<void> deleteProduct(
     String userId,
-    String materialId,
+    String productId,
   );
 
   Future<List<ProductModel>> getProducts(
     String userId, {
     bool forceRefresh = false,
   });
+
+  Future<ProductModel> getProduct(
+    String userId,
+    String productId,
+  );
 }

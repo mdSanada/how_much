@@ -20,7 +20,11 @@ class MaterialDataSource implements MaterialDataSourceProtocol {
 
   @override
   Future<MaterialModel> readMaterial(String id) {
-    throw UnimplementedError();
+    final userId = CurrentUser().user!.id;
+    return database.getMaterial(
+      userId,
+      id,
+    );
   }
 
   @override
@@ -35,8 +39,13 @@ class MaterialDataSource implements MaterialDataSourceProtocol {
   }
 
   @override
-  Future<bool> deleteMaterial(String id) {
-    throw UnimplementedError();
+  Future<bool> deleteMaterial(String id) async {
+    final userId = CurrentUser().user!.id;
+    await database.deleteMaterial(
+      userId,
+      id,
+    );
+    return true;
   }
 
   @override
@@ -46,7 +55,14 @@ class MaterialDataSource implements MaterialDataSourceProtocol {
   }
 
   @override
-  Future<MaterialModel> editMaterial(MaterialModel material) {
-    throw UnimplementedError();
+  Future<MaterialModel> editMaterial(MaterialModel material) async {
+    final userId = CurrentUser().user!.id;
+    await database.updateMaterial(
+      userId,
+      material.id,
+      material.toJson(),
+      forceRefresh: true,
+    );
+    return material;
   }
 }

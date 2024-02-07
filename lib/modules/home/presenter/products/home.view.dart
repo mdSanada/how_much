@@ -1,9 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:how_much/modules/home/data/datasource/product.datasource.dart';
-import 'package:how_much/modules/home/data/repositories/product.repository.dart';
-import 'package:how_much/modules/home/domain/usecase/crud.product.dart';
-import 'package:how_much/modules/home/presenter/add_products/add.products.view.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 
 import '../../../../consts/strings.dart';
 import '../../../../design/sizes.dart';
@@ -14,10 +11,46 @@ import '../../../../widgets/buttons/floating.action.icon.button.dart';
 import '../../../../widgets/cells/image.title.description.cell.dart';
 import '../../../../widgets/padding.safe.area.dart';
 import '../../../../widgets/title.app.bar.dart';
+import '../../data/datasource/product.datasource.dart';
+import '../../data/repositories/product.repository.dart';
+import '../../domain/usecase/crud.product.dart';
+import '../add_products/add.products.view.dart';
 import '../add_products/add.products.viewmodel.dart';
+import '../products_detail/products.detail.view.dart';
+import 'products.viewmodel.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends StatefulWidget {
   const HomeView({super.key});
+
+  @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
+  final ProductsViewModel viewModel = ProductsViewModel(
+    productsUseCase: CrudProductUseCase(
+      repository: ProductRepository(
+        dataSource: ProductDataSource(
+          database: ProductsFirestoreDatabase(
+            userNetworkDatabase: UserNetworkDatabase(),
+          ),
+        ),
+      ),
+    ),
+  );
+
+  @override
+  void initState() {
+    Future.wait([
+      _refresh(),
+    ]);
+
+    super.initState();
+  }
+
+  Future<void> _refresh({bool forceRefresh = false}) async {
+    await viewModel.getProducts(forceRefresh);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,26 +76,38 @@ class HomeView extends StatelessWidget {
                 builder: (context) => AddProductsView(viewModel: viewModel),
               ),
             );
+            await _refresh();
           }),
       appBar: TitleAppBar(
         title: StringsConsts.titleProducts,
         highlightColor: Stylesheet.secondaryColor,
       ),
       body: PaddingSafeArea(
-        child: ListView.separated(
-          separatorBuilder: (_, __) => const SizedBox(
-            height: Sizes.sMedium,
+        child: Observer(
+          builder: (context) => ListView.separated(
+            separatorBuilder: (_, __) => const SizedBox(
+              height: Sizes.sMedium,
+            ),
+            itemCount: viewModel.products.length,
+            itemBuilder: (context, index) {
+              return ImageTextDescriptionCell(
+                index: index,
+                title: viewModel.products[index].name,
+                description: viewModel.products[index].description,
+                highlightColor: Stylesheet.primaryColor,
+                onPressed: () async {
+                  await Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => ProductDetailView(
+                        productEntity: viewModel.products[index],
+                      ),
+                    ),
+                  );
+                  await _refresh();
+                },
+              );
+            },
           ),
-          itemCount: 5,
-          itemBuilder: (context, index) {
-            return ImageTextDescriptionCell(
-              index: index,
-              title: StringsConsts.placeholder,
-              description: StringsConsts.placeholder,
-              icon: Icons.heart_broken,
-              highlightColor: Stylesheet.primaryColor,
-            );
-          },
         ),
       ),
     );

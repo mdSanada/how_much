@@ -7,6 +7,9 @@ class StringsConsts {
   static String continueGoogle = 'Continuar com Google';
 
   static String titleProducts = 'Produtos';
+  static String titleProductsDetail = 'Detalhes do Produto';
+  static String titleAddProducts = 'Adicionar produto';
+  static String titleEditProducts = 'Editar produto';
 
   static String titleMaterial = 'Materiais';
   static String titleMaterialDetail = 'Detalhes do Material';

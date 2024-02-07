@@ -83,7 +83,7 @@ class _AddProductMaterialsPageState extends State<AddProductMaterialsPage> {
               builder: (context) => ListView.separated(
                 shrinkWrap: true,
                 itemCount: viewModel.materials.length + 1,
-                separatorBuilder: (ctx, index) => Spacing(),
+                separatorBuilder: (ctx, index) => const Spacing(),
                 itemBuilder: (context, index) {
                   if (index == viewModel.materials.length) {
                     return Padding(
