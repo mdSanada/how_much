@@ -25,12 +25,80 @@ mixin _$ProductsDetailViewModel on ProductsDetailViewModelBase, Store {
     });
   }
 
+  late final _$configureProductAsyncAction = AsyncAction(
+      'ProductsDetailViewModelBase.configureProduct',
+      context: context);
+
+  @override
+  Future<void> configureProduct(ProductEntity product) {
+    return _$configureProductAsyncAction
+        .run(() => super.configureProduct(product));
+  }
+
   late final _$getProductAsyncAction =
       AsyncAction('ProductsDetailViewModelBase.getProduct', context: context);
 
   @override
   Future<ProductEntity?> getProduct(String id) {
     return _$getProductAsyncAction.run(() => super.getProduct(id));
+  }
+
+  late final _$ProductsDetailViewModelBaseActionController =
+      ActionController(name: 'ProductsDetailViewModelBase', context: context);
+
+  @override
+  String getUnitValue() {
+    final _$actionInfo = _$ProductsDetailViewModelBaseActionController
+        .startAction(name: 'ProductsDetailViewModelBase.getUnitValue');
+    try {
+      return super.getUnitValue();
+    } finally {
+      _$ProductsDetailViewModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  String getUnitPercentage() {
+    final _$actionInfo = _$ProductsDetailViewModelBaseActionController
+        .startAction(name: 'ProductsDetailViewModelBase.getUnitPercentage');
+    try {
+      return super.getUnitPercentage();
+    } finally {
+      _$ProductsDetailViewModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  List<KeyValue> getTotalSection() {
+    final _$actionInfo = _$ProductsDetailViewModelBaseActionController
+        .startAction(name: 'ProductsDetailViewModelBase.getTotalSection');
+    try {
+      return super.getTotalSection();
+    } finally {
+      _$ProductsDetailViewModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  List<KeyValue> getUnitSection() {
+    final _$actionInfo = _$ProductsDetailViewModelBaseActionController
+        .startAction(name: 'ProductsDetailViewModelBase.getUnitSection');
+    try {
+      return super.getUnitSection();
+    } finally {
+      _$ProductsDetailViewModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  List<KeyValue> getMaterialsSection() {
+    final _$actionInfo = _$ProductsDetailViewModelBaseActionController
+        .startAction(name: 'ProductsDetailViewModelBase.getMaterialsSection');
+    try {
+      return super.getMaterialsSection();
+    } finally {
+      _$ProductsDetailViewModelBaseActionController.endAction(_$actionInfo);
+    }
   }
 
   @override

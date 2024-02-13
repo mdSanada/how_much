@@ -11,7 +11,7 @@ class SignOut {
     required this.repository,
   });
 
-  Future<Either<Failure, LoggedUserEntity>> call() async {
-    return await repository.signIn();
+  Future<Either<Failure, void>> call() async {
+    return await repository.signOut();
   }
 }

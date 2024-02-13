@@ -1,6 +1,12 @@
+import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
+import 'package:how_much/calculator/calculator.dart';
+import 'package:how_much/widgets/inset_grouped/key.value.model.dart';
 import 'package:mobx/mobx.dart';
 
+import '../../../../consts/strings.dart';
 import '../../../../core/logger.dart';
+import '../../../../formatters/currency.formatter.dart';
+import '../../../../formatters/number.formatter.dart';
 import '../../domain/entities/material.entity.dart';
 import '../../domain/usecase/crud.material.dart';
 
@@ -12,9 +18,20 @@ class MaterialsDetailViewModel = MaterialsDetailViewModelBase
 abstract class MaterialsDetailViewModelBase with Store {
   final MaterialsUseCase materialsUseCase;
 
+  final CurrencyTextInputFormatter currencyFormatter =
+      CurrencyFormatter.formatter();
+
+  @observable
+  MaterialEntity? material;
+
   MaterialsDetailViewModelBase({
     required this.materialsUseCase,
   });
+
+  @action
+  void configureMaterial(MaterialEntity material) {
+    this.material = material;
+  }
 
   @action
   Future<MaterialEntity?> getMaterial(
@@ -31,6 +48,7 @@ abstract class MaterialsDetailViewModelBase with Store {
         material = data;
       },
     );
+    this.material = material;
     return material;
   }
 
@@ -47,5 +65,23 @@ abstract class MaterialsDetailViewModelBase with Store {
       },
     );
     return didDelete;
+  }
+
+  List<KeyValue> section() {
+    return [
+      KeyValue(
+        key: StringsConsts.formCost,
+        value:
+            CurrencyFormatter.number(material?.price ?? 0.0, currencyFormatter),
+      ),
+      KeyValue(
+        key: StringsConsts.formQuantity,
+        value: NumberFormatter.stringfy(material?.quantity ?? 0.0),
+      ),
+      KeyValue(
+        key: StringsConsts.formMeasure,
+        value: MeasuresManager.stringfy(material?.measure ?? Measures.unity),
+      ),
+    ];
   }
 }

@@ -27,4 +27,6 @@ abstract class MaterialDatabaseProtocol {
     String userId,
     String materialId,
   );
+
+  Future<void> clearCache();
 }

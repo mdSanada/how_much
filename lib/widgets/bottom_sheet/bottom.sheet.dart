@@ -9,12 +9,14 @@ class InfoBottomSheet extends StatelessWidget {
   final IconData icon;
   final String title;
   final String description;
+  final Color color;
 
   const InfoBottomSheet({
     Key? key,
     required this.icon,
     required this.title,
     required this.description,
+    this.color = Stylesheet.black,
   }) : super(key: key);
 
   @override
@@ -38,7 +40,7 @@ class InfoBottomSheet extends StatelessWidget {
             ),
             child: Icon(
               icon,
-              color: Stylesheet.black,
+              color: color,
             ),
           ),
           Text(

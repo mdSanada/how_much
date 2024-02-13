@@ -24,9 +24,9 @@ class SignRepositoy extends SignRepositoryProtocol {
   }
 
   @override
-  Future<Either<Failure, void>> signOut(LoggedUserEntity user) async {
+  Future<Either<Failure, void>> signOut() async {
     try {
-      final signOut = await dataSource.signOut(user as LoggedUser);
+      final signOut = await dataSource.signOut();
       return Right(signOut);
     } on Exception {
       return Left(JSONFailure());

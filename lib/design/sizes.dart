@@ -11,10 +11,11 @@ class Sizes {
   static const double large = 24.0;
   static const double footerBottomSheet = 48.0;
   static const double tabbarIcon = 36.0;
+  static const double smallButton = 30.0;
   static const double button = 40.0;
   static const double maxWidth = 768;
   static const double minWidthSideButton = 150.0;
   static const double productCellContraint = 100.0;
 
-  static const double sideMenuBarWidth = 64.0;
+  static const double sideMenuBarWidth = 48.0;
 }

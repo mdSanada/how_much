@@ -122,4 +122,9 @@ class MaterialFirestoreDatabase implements MaterialDatabaseProtocol {
     Map<String, dynamic> data = doc.data()!;
     return MaterialModel.fromJson(data);
   }
+
+  @override
+  Future<void> clearCache() {
+    return _materialsCache.clear();
+  }
 }

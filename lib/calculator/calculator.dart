@@ -9,6 +9,16 @@ abstract class CalculatorProtocol {
     double value,
     double actualCost,
   );
+  double calculatePrice(
+    ProfitType profitType,
+    double value,
+    double actualCost,
+  );
+  double calculateProfit(
+    ProfitType profitType,
+    double value,
+    double actualCost,
+  );
   double toDefault(Measures measure, double value);
   double fromDefault(Measures measure, double value);
 }
@@ -42,7 +52,7 @@ class Calculator implements CalculatorProtocol {
   }
 
   @override
-  (double, double) calculatePriceAndProfit(
+  double calculatePrice(
     ProfitType profitType,
     double value,
     double actualCost,
@@ -50,13 +60,38 @@ class Calculator implements CalculatorProtocol {
     switch (profitType) {
       case ProfitType.percentage:
         final price = actualCost + (actualCost * (value / 100));
-        final profit = value;
-        return (price, profit);
+        return price;
       case ProfitType.value:
         final price = value;
-        final profit = (value / actualCost) * 100;
-        return (price, profit);
+        return price;
     }
+  }
+
+  @override
+  double calculateProfit(
+    ProfitType profitType,
+    double value,
+    double actualCost,
+  ) {
+    switch (profitType) {
+      case ProfitType.percentage:
+        final profit = value;
+        return profit;
+      case ProfitType.value:
+        final profit = (value / actualCost) * 100;
+        return profit;
+    }
+  }
+
+  @override
+  (double, double) calculatePriceAndProfit(
+    ProfitType profitType,
+    double value,
+    double actualCost,
+  ) {
+    final price = calculatePrice(profitType, value, actualCost);
+    final profit = calculateProfit(profitType, value, actualCost);
+    return (price, profit);
   }
 
   @override

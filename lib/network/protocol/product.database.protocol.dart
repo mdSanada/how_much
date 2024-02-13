@@ -27,4 +27,6 @@ abstract class ProductsDatabaseProtocol {
     String userId,
     String productId,
   );
+
+  Future<void> clearCache();
 }

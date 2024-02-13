@@ -4,7 +4,7 @@ import '../models/logged.user.dart';
 
 abstract class SignDataSourceProtocol {
   Future<LoggedUser> signIn();
-  Future<void> signOut(LoggedUser user);
+  Future<void> signOut();
   Future<LoggedUser> getUser();
 }
 
@@ -37,7 +37,7 @@ class SignDataSource implements SignDataSourceProtocol {
   }
 
   @override
-  Future<void> signOut(LoggedUser user) async {
+  Future<void> signOut() async {
     try {
       return await auth.signOut();
     } catch (e) {

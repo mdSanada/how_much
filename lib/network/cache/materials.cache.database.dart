@@ -8,6 +8,7 @@ import '../../modules/materials/data/models/material.model.dart';
 abstract class MaterialsCacheProtocol {
   Future<bool> store(List<MaterialModel> materials);
   Future<List<MaterialModel>> cache();
+  Future<bool> clear();
 }
 
 class MaterialsCacheDatabase implements MaterialsCacheProtocol {
@@ -67,5 +68,10 @@ class MaterialsCacheDatabase implements MaterialsCacheProtocol {
       "$materials",
     );
     return Future.value(materials);
+  }
+
+  @override
+  Future<bool> clear() {
+    return _storage.then((storage) => storage.remove(key));
   }
 }

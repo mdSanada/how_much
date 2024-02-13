@@ -8,6 +8,7 @@ import '../../modules/home/data/models/product.model.dart';
 abstract class ProductsCacheProtocol {
   Future<bool> store(List<ProductModel> products);
   Future<List<ProductModel>> cache();
+  Future<bool> clear();
 }
 
 class ProductsCacheDatabase implements ProductsCacheProtocol {
@@ -67,5 +68,10 @@ class ProductsCacheDatabase implements ProductsCacheProtocol {
       "$products",
     );
     return Future.value(products);
+  }
+
+  @override
+  Future<bool> clear() {
+    return _storage.then((storage) => storage.remove(key));
   }
 }

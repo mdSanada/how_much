@@ -49,6 +49,8 @@ class StringsConsts {
 
   static String placeholder = 'Placeholder';
 
+  static String detail = 'Detalhes';
+  static String pricePerUnit = 'Valor por unidade';
   static String productTitleDescription = 'Descrição';
   static String productTitleMaterials = 'Materiais';
   static String productTitleChooseMaterials = 'Escolha os Materiais';
@@ -56,4 +58,35 @@ class StringsConsts {
   static String productTitleProfit = 'Lucro';
   static String productTitleProfitPlaceholder = '20%';
   static String formPercentage = "%";
+
+  static String total = 'Total';
+  static String unit = 'Unidade';
+  static String materials = 'Materiais';
+
+  static String revenue = 'Rendimento';
+  static String profit = 'Lucro (%)';
+  static String totalRevenue = 'Lucro Total (R\$)';
+
+  static String costPerUnit = 'Custo por unidade';
+  static String revenueWithSymbol = 'Lucro (R\$)';
+
+  static String signout = 'Sair';
+
+  static String settingsAccountSection = 'Conta';
+  static String settingsEmail = 'Email';
+
+  static String settingsSubscriptionSection = 'Premium';
+  static String settingsSubscription = 'Inscrição';
+
+  static String settingsSystemSection = 'Sistema';
+  static String settingsUpdateLocalCache = 'Atualizar dados locais';
+
+  static String settingsGeneralSection = 'Geral';
+  static String settingsAbout = 'Sobre';
+  static String settingsAboutDescription =
+      'Descubra uma maneira fácil e eficaz de gerenciar seus negócios com nosso aplicativo inovador de cálculo de preços e lucros.\n\nProjetado para empreendedores e proprietários de pequenos negócios, nosso aplicativo simplifica todo o processo, permitindo que você determine preços competitivos e maximize seus lucros de maneira rápida e intuitiva.';
+  static String settingsHelp = 'Precisa de ajuda?';
+  static String settingsBug = 'Relatar um problema';
+  static String settingsTermsOfUse = 'Termos de uso';
+  static String settingsPrivacyPolicy = 'Política de privacidade';
 }

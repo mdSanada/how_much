@@ -27,12 +27,15 @@ abstract class Stylesheet {
     );
   }
 
-  static TextStyle header02({Color color = Stylesheet.black}) {
+  static TextStyle header02({
+    Color color = Stylesheet.black,
+    FontWeight fontWeight = FontWeight.w400,
+  }) {
     return TextStyle(
       color: color,
       fontFamily: null,
       fontStyle: FontStyle.normal,
-      fontWeight: FontWeight.w400,
+      fontWeight: fontWeight,
       fontSize: 24.0,
       height: 1.1,
       letterSpacing: -0.2,
@@ -54,12 +57,15 @@ abstract class Stylesheet {
     );
   }
 
-  static TextStyle body({Color color = Stylesheet.black}) {
+  static TextStyle body({
+    Color color = Stylesheet.black,
+    FontWeight fontWeight = FontWeight.w400,
+  }) {
     return TextStyle(
       color: color,
       fontFamily: null,
       fontStyle: FontStyle.normal,
-      fontWeight: FontWeight.w400,
+      fontWeight: fontWeight,
       fontSize: 16.0,
       height: 1.20,
       letterSpacing: 0.08,
@@ -83,8 +89,8 @@ abstract class Stylesheet {
       color: color,
       fontFamily: null,
       fontStyle: FontStyle.normal,
-      fontWeight: FontWeight.w600,
-      fontSize: 12.0,
+      fontWeight: FontWeight.w400,
+      fontSize: 14.0,
       height: 1.5,
       letterSpacing: 0.048,
     );

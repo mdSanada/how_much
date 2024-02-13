@@ -12,15 +12,23 @@ class BoxButton extends StatelessWidget {
   final String title;
   final TextStyle textStyle;
   final bool isLoading;
+  final EdgeInsetsGeometry? padding;
+  final LinearGradient? gradient;
+  final BorderRadiusGeometry? borderRadius;
+  final BorderRadius? buttonBorderRadius;
 
   const BoxButton({
     super.key,
     required this.title,
     required this.textStyle,
+    this.borderRadius,
     this.height = 60,
     this.backgroundColor = Stylesheet.secondaryColor,
     this.onPressed,
     this.isLoading = false,
+    this.padding,
+    this.gradient,
+    this.buttonBorderRadius,
   });
 
   @override
@@ -28,11 +36,14 @@ class BoxButton extends StatelessWidget {
     return Container(
       height: height,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(CornerRadius.large),
+        borderRadius: borderRadius ?? BorderRadius.circular(CornerRadius.large),
+        gradient: gradient,
       ),
       clipBehavior: Clip.hardEdge,
       child: CupertinoButton(
-        color: backgroundColor,
+        borderRadius: buttonBorderRadius,
+        padding: padding,
+        color: gradient != null ? null : backgroundColor,
         disabledColor: CupertinoColors.inactiveGray,
         onPressed: onPressed,
         child: isLoading

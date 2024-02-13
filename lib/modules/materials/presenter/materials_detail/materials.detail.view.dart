@@ -1,8 +1,7 @@
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:how_much/calculator/calculator.dart';
-import 'package:how_much/formatters/number.formatter.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 
 import '../../../../consts/strings.dart';
 import '../../../../design/sizes.dart';
@@ -11,15 +10,15 @@ import '../../../../formatters/currency.formatter.dart';
 import '../../../../network/database/materials.network.database.dart';
 import '../../../../network/database/user.network.database.dart';
 import '../../../../widgets/buttons/floating.action.icon.button.dart';
-import '../../../../widgets/cells/material.item.widget.dart';
+import '../../../../widgets/inset_grouped/inset.grouped.colletion.dart';
 import '../../../../widgets/padding.scrollable.safe.area.dart';
 import '../../../../widgets/spacing.dart';
 import '../../../../widgets/title.app.bar.dart';
 import '../../data/datasource/material.datasource.dart';
 import '../../data/repositories/material.repository.dart';
+import '../../domain/entities/material.entity.dart';
 import '../../domain/usecase/crud.material.dart';
 import '../add_material/add.material.view.dart';
-import '../../domain/entities/material.entity.dart';
 import 'materials.detail.viewmodel.dart';
 
 class MaterialsDetailView extends StatefulWidget {
@@ -35,7 +34,6 @@ class MaterialsDetailView extends StatefulWidget {
 }
 
 class _MaterialsDetailViewState extends State<MaterialsDetailView> {
-  late MaterialEntity materialEntity;
   final MaterialsDetailViewModel viewModel = MaterialsDetailViewModel(
     materialsUseCase: MaterialsUseCase(
       repository: MaterialRepository(
@@ -50,17 +48,12 @@ class _MaterialsDetailViewState extends State<MaterialsDetailView> {
 
   @override
   void initState() {
-    materialEntity = widget.materialEntity;
+    viewModel.configureMaterial(widget.materialEntity);
     super.initState();
   }
 
   Future<void> _refresh() async {
-    final material = await viewModel.getMaterial(widget.materialEntity.id);
-    if (material != null) {
-      setState(() {
-        materialEntity = material;
-      });
-    }
+    await viewModel.getMaterial(widget.materialEntity.id);
   }
 
   @override
@@ -83,7 +76,7 @@ class _MaterialsDetailViewState extends State<MaterialsDetailView> {
             ),
             onPressed: () async {
               final didDelete =
-                  await viewModel.deleteMaterial(materialEntity.id);
+                  await viewModel.deleteMaterial(viewModel.material?.id ?? "");
               if (context.mounted && didDelete) {
                 Navigator.of(context).pop();
               }
@@ -98,7 +91,7 @@ class _MaterialsDetailViewState extends State<MaterialsDetailView> {
           await Navigator.of(context, rootNavigator: true).push(
             CupertinoModalPopupRoute(
               builder: (context) => AddMaterialView(
-                materialEntity: materialEntity,
+                materialEntity: viewModel.material,
               ),
             ),
           );
@@ -106,41 +99,28 @@ class _MaterialsDetailViewState extends State<MaterialsDetailView> {
         },
       ),
       body: PaddingScrollableSafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Spacing(),
-            Text(
-              materialEntity.name,
-              style: Stylesheet.header(),
-            ),
-            const Spacing(),
-            Text(
-              materialEntity.description,
-              style: Stylesheet.body(),
-            ),
-            const Spacing(size: Sizes.large),
-            MaterialItemWidget(
-              title: StringsConsts.formCost,
-              value: CurrencyFormatter.number(
-                  materialEntity.price, currencyFormatter),
-            ),
-            const Spacing(
-              line: Sizes.thinLine,
-            ),
-            MaterialItemWidget(
-              title: StringsConsts.formQuantity,
-              value: NumberFormatter.stringfy(materialEntity.quantity),
-            ),
-            const Spacing(
-              line: Sizes.thinLine,
-            ),
-            MaterialItemWidget(
-              title: StringsConsts.formMeasure,
-              value: MeasuresManager.stringfy(materialEntity.measure),
-            ),
-          ],
+        child: Observer(
+          builder: (context) => Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Spacing(),
+              Text(
+                viewModel.material?.name ?? "",
+                style: Stylesheet.header(),
+              ),
+              const Spacing(),
+              Text(
+                viewModel.material?.description ?? "",
+                style: Stylesheet.body(),
+              ),
+              const Spacing(size: Sizes.large),
+              InsetGroupedCollection(
+                title: StringsConsts.detail,
+                items: viewModel.section(),
+              ),
+            ],
+          ),
         ),
       ),
     );

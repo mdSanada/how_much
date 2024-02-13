@@ -122,4 +122,9 @@ class ProductsFirestoreDatabase implements ProductsDatabaseProtocol {
       throw Exception("Product not found");
     }
   }
+
+  @override
+  Future<void> clearCache() {
+    return _productsCache.clear();
+  }
 }

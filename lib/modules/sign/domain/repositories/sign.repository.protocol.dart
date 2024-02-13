@@ -5,5 +5,5 @@ import '../entities/logged.user.dart';
 
 abstract class SignRepositoryProtocol {
   Future<Either<Failure, LoggedUserEntity>> signIn();
-  Future<Either<Failure, void>> signOut(LoggedUserEntity user);
+  Future<Either<Failure, void>> signOut();
 }
