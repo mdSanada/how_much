@@ -11,7 +11,7 @@ class CurrentUser {
 
   LoggedUser? _user;
 
-  get user => _user;
+  LoggedUser? get user => _user;
 
   set setUser(LoggedUser? user) {
     _user = user;

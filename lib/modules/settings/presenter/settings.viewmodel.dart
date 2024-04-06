@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
-
-import 'package:how_much/modules/settings/widgets/settings.general.section.dart';
-import 'package:how_much/modules/webview/webview.view.dart';
 import 'package:mobx/mobx.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../consts/strings.dart';
 import '../../sign/domain/usecase/signout.dart';
+import '../../webview/webview.view.dart';
+import '../domain/usecase/get.user.dart';
+import '../widgets/settings.general.section.dart';
 
 part 'settings.viewmodel.g.dart';
 
@@ -15,6 +15,7 @@ class SettingsViewModel = SettingsViewModelBase with _$SettingsViewModel;
 abstract class SettingsViewModelBase with Store {
   final SignOut googleSignOut;
   final SignOut appleSignOut;
+  final GetUser getUser;
 
   @observable
   String name = "";
@@ -34,6 +35,7 @@ abstract class SettingsViewModelBase with Store {
   SettingsViewModelBase({
     required this.googleSignOut,
     required this.appleSignOut,
+    required this.getUser,
   });
 
   @action
@@ -46,9 +48,20 @@ abstract class SettingsViewModelBase with Store {
   }
 
   @action
-  Future<void> signout() async {
-    await googleSignOut();
-    await appleSignOut();
+  Future<void> signout(BuildContext context) async {
+    final gsignout = await googleSignOut();
+    final aSignOut = await appleSignOut();
+    gsignout.fold(
+      (l) => print(l),
+      (r) => print("success"),
+    );
+
+    aSignOut.fold(
+      (l) => print(l),
+      (r) => print("success"),
+    );
+
+    return;
   }
 
   @action
@@ -109,19 +122,25 @@ abstract class SettingsViewModelBase with Store {
         .join('&');
   }
 
-  updateName() {
-    name = "matheus";
+  updateName() async {
+    await getUser.name().then((value) {
+      name = value.fold((l) => "", (r) => r);
+    });
   }
 
-  updateLetters() {
-    letters = "ms";
+  updateLetters() async {
+    await getUser.letters().then((value) {
+      letters = value.fold((l) => "", (r) => r);
+    });
   }
 
-  updateEmail() {
-    email = "maatheusdavid@me.com";
+  updateEmail() async {
+    await getUser.email().then((value) {
+      email = value.fold((l) => "", (r) => r);
+    });
   }
 
-  updateSubscription() {
+  updateSubscription() async {
     subscription = "free".toUpperCase();
   }
 

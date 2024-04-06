@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:how_much/modules/settings/data/repositories/settings.repository.dart';
+import 'package:how_much/modules/settings/domain/usecase/get.user.dart';
 
 import '../../../auth/apple.auth.dart';
 import '../../../auth/google.auth.dart';
@@ -21,6 +24,7 @@ import '../../sign/data/datasource/sign.datasource.dart';
 import '../../sign/data/repositories/signin.repository.dart';
 import '../../sign/domain/usecase/signout.dart';
 import '../../sign/presenter/sign.view.dart';
+import '../data/datasource/settings.datasource.dart';
 import '../widgets/settings.action.grouped.dart';
 import '../widgets/settings.general.section.dart';
 import '../widgets/settings.grouped.collection.dart';
@@ -58,6 +62,11 @@ class _SettingsViewState extends State<SettingsView> {
             firebaseAuth: FirebaseAuth.instance,
           ),
         ),
+      ),
+    ),
+    getUser: GetUser(
+      repository: SettingsRepositoy(
+        dataSource: SettingsDataSource(),
       ),
     ),
   );
@@ -128,20 +137,17 @@ class _SettingsViewState extends State<SettingsView> {
             Center(
               child: SignOutButton(
                 onPressed: () async {
-                  () async {
-                    // await viewModel.signout();
-                    if (context.mounted) {
-                      await Navigator.of(
-                        context,
-                        rootNavigator: true,
-                      ).pushAndRemoveUntil(
-                        MaterialPageRoute(
-                          builder: (_) => const SignView(),
-                        ),
-                        (Route<dynamic> route) => false,
-                      );
-                    }
-                  };
+                  await viewModel.signout(context);
+
+                  Navigator.of(
+                    context,
+                    rootNavigator: true,
+                  ).pushAndRemoveUntil(
+                    MaterialPageRoute(
+                      builder: (_) => const SignView(),
+                    ),
+                    (Route<dynamic> route) => false,
+                  );
                 },
               ),
             ),
